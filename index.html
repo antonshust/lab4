@@ -26,26 +26,26 @@
             line-height: 1.6;
             margin: 20px;
         }
-        
+
         h1, h2 {
             color: #333;
         }
-        
+
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         img {
             max-width: 100%;
             height: auto;
         }
-        
+
         ul {
             list-style: none;
             padding: 0;
         }
-        
+
         li {
             margin-bottom: 10px;
         }
@@ -55,6 +55,7 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
         .search-input {
             padding: 8px;
             font-size: 16px;
@@ -220,7 +221,13 @@
             }
         });
 
-        -input");
+        backToTopButton.addEventListener("click", () => {
+            document.body.scrollTop = 0; // Для Safari
+            document.documentElement.scrollTop = 0; // Для Chrome, Firefox, IE и Opera
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById("search-input");
         const destinations = document.querySelectorAll(".destination");
 
         searchInput.addEventListener("input", function() {
@@ -237,13 +244,9 @@
         });
 
 
-        // Pagination (basic example - needs more logic for dynamic content)
-        // This is a placeholder, as your page doesn't have enough content to paginate yet.
-        // You'd need to determine how many items per page, and adjust the display accordingly.
-
-        //Example Pagination (with fewer destinations than pages)
-        const itemsPerPage = 1; // Adjust as needed
-        const allDestinations = document.querySelectorAll('.destination');
+        // Pagination (only for destinations)
+        const itemsPerPage = 3;
+        const allDestinations = document.querySelectorAll('#destinations .destination'); // Specific to the destinations section
         const numDestinations = allDestinations.length;
         const numPages = Math.ceil(numDestinations / itemsPerPage);
         const pagination = document.querySelector('.pagination');
@@ -260,6 +263,11 @@
                     destination.style.display = 'none';
                 }
             });
+        }
+
+        // Clear existing pagination links (except prev/next)
+        while (pagination.children.length > 2) {
+            pagination.removeChild(pagination.children[1]); // Remove the second child (index 1)
         }
 
         // Generate pagination links
@@ -287,6 +295,41 @@
         // Initial display - show the first page
         showPage(1);
 
+        // Previous/Next page functionality
+        const prevButton = document.querySelector('.pagination .prev');
+        const nextButton = document.querySelector('.pagination .next');
+        let currentPage = 1;
+
+        prevButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+                showPage(currentPage);
+            }
+        });
+
+        nextButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage < numPages) {
+                currentPage++;
+                updatePagination();
+                showPage(currentPage);
+            }
+        });
+
+        function updatePagination() {
+             // Remove 'active' class from all links
+            document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
+
+            // Find the link for the current page and add 'active'
+            const links = document.querySelectorAll('.pagination a');
+            links.forEach(link => {
+                if (link.textContent == currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
