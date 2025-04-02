@@ -15,7 +15,7 @@
         accurateTrackBounce:true
    });
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/100181009" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,6 +49,70 @@
         li {
             margin-bottom: 10px;
         }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-input {
+            padding: 8px;
+            font-size: 16px;
+            width: 70%;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            display: none; /* Скрываем кнопку по умолчанию */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Pagination */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        /* Destination Styles */
+        .destination {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        /* Hide elements by default for pagination */
+        .destination.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +121,7 @@
             <h1>Путешествия и приключения</h1>
             <p>Откройте мир вместе с нами!</p>
         </header>
-        
+
         <nav>
             <ul>
                 <li><a href="#home">Главная</a></li>
@@ -66,19 +130,23 @@
                 <li><a href="#contact">Контакты</a></li>
             </ul>
         </nav>
-        
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Поиск по странице...">
+        </div>
+
         <main>
             <section id="home">
                 <h2>Добро пожаловать!</h2>
                 <p>Мы помогаем людям открывать новые места и получать незабываемые впечатления.</p>
-                <img src="https://via.placeholder.com/600x400?text=Travel" alt="Фотография путешествия">
+                <img src="" alt="Фотография путешествия">
             </section>
-            
+
             <section id="about">
                 <h2>О нас</h2>
                 <p>Наша компания специализируется на организации уникальных путешествий по всему миру. Мы создаем маршруты, которые запомнятся на всю жизнь.</p>
             </section>
-            
+
             <section id="destinations">
                 <h2>Популярные направления</h2>
                 <div class="destination">
@@ -93,8 +161,28 @@
                     <h3>Рим, Италия</h3>
                     <p>Вечный город, где каждый камень рассказывает историю.</p>
                 </div>
+                <div class="destination">
+                    <h3>Токио, Япония</h3>
+                    <p>Современный мегаполис с древними традициями.</p>
+                </div>
+                <div class="destination">
+                    <h3>Нью-Йорк, США</h3>
+                    <p>Город, который никогда не спит.</p>
+                </div>
+                <div class="destination">
+                    <h3>Барселона, Испания</h3>
+                    <p>Яркий и солнечный город с неповторимой архитектурой.</p>
+                </div>
+                <div class="destination">
+                    <h3>Сидней, Австралия</h3>
+                    <p>Город с потрясающими пляжами и уникальной культурой.</p>
+                </div>
+                <div class="destination">
+                    <h3>Каир, Египет</h3>
+                    <p>Город с богатой историей и древними сокровищами.</p>
+                </div>
             </section>
-            
+
             <section id="contact">
                 <h2>Свяжитесь с нами</h2>
                 <p>Телефон: +7 (999) 123-45-67</p>
@@ -102,10 +190,103 @@
                 <p>Адрес: ул. Примерная, 123</p>
             </section>
         </main>
-        
+
+        <div class="pagination">
+            <a href="#" class="prev">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#" class="next">&raquo;</a>
+        </div>
+
+        <button id="back-to-top">Наверх</button>
+
         <footer>
             <p>© 2025 Путешествия и приключения</p>
         </footer>
     </div>
+
+    <script>
+        // Back to Top Button
+        const backToTopButton = document.getElementById("back-to-top");
+
+        window.addEventListener("scroll", () => {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        });
+
+        -input");
+        const destinations = document.querySelectorAll(".destination");
+
+        searchInput.addEventListener("input", function() {
+            const searchTerm = this.value.toLowerCase();
+
+            destinations.forEach(destination => {
+                const textContent = destination.textContent.toLowerCase();
+                if (textContent.includes(searchTerm)) {
+                    destination.style.display = "block"; // or use "destination.classList.remove('hidden');"
+                } else {
+                    destination.style.display = "none"; // or use "destination.classList.add('hidden');"
+                }
+            });
+        });
+
+
+        // Pagination (basic example - needs more logic for dynamic content)
+        // This is a placeholder, as your page doesn't have enough content to paginate yet.
+        // You'd need to determine how many items per page, and adjust the display accordingly.
+
+        //Example Pagination (with fewer destinations than pages)
+        const itemsPerPage = 3; // Adjust as needed
+        const allDestinations = document.querySelectorAll('.destination');
+        const numDestinations = allDestinations.length;
+        const numPages = Math.ceil(numDestinations / itemsPerPage);
+        const pagination = document.querySelector('.pagination');
+
+        // Helper function to show/hide destinations based on the page
+        function showPage(pageNumber) {
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            allDestinations.forEach((destination, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    destination.style.display = 'block';
+                } else {
+                    destination.style.display = 'none';
+                }
+            });
+        }
+
+        // Generate pagination links
+        for (let i = 1; i <= numPages; i++) {
+            const link = document.createElement('a');
+            link.href = '#';
+            link.textContent = i;
+
+            if (i === 1) { // Activate the first page
+                link.classList.add('active');
+            }
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link behavior
+                // Remove 'active' class from all links
+                document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
+                // Add 'active' class to the clicked link
+                link.classList.add('active');
+                showPage(i);
+            });
+
+            pagination.insertBefore(link, pagination.querySelector('.next')); // Insert before the "next" link
+        }
+
+        // Initial display - show the first page
+        showPage(1);
+
+    </script>
 </body>
 </html>
