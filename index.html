@@ -194,11 +194,6 @@
 
         <div class="pagination">
             <a href="#" class="prev">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
             <a href="#" class="next">&raquo;</a>
         </div>
 
@@ -241,15 +236,20 @@
                     destination.style.display = "none"; // or use "destination.classList.add('hidden');"
                 }
             });
+             // After search, re-apply pagination
+            currentPage = 1; // Reset to the first page after a search
+            updatePagination();
+            showPage(currentPage);
         });
 
 
         // Pagination (only for destinations)
         const itemsPerPage = 3;
-        const allDestinations = document.querySelectorAll('#destinations .destination'); // Specific to the destinations section
+        const allDestinations = document.querySelectorAll('#destinations .destination');
         const numDestinations = allDestinations.length;
         const numPages = Math.ceil(numDestinations / itemsPerPage);
         const pagination = document.querySelector('.pagination');
+        let currentPage = 1;
 
         // Helper function to show/hide destinations based on the page
         function showPage(pageNumber) {
@@ -266,39 +266,45 @@
         }
 
         // Clear existing pagination links (except prev/next)
-        while (pagination.children.length > 2) {
-            pagination.removeChild(pagination.children[1]); // Remove the second child (index 1)
-        }
-
-        // Generate pagination links
-        for (let i = 1; i <= numPages; i++) {
-            const link = document.createElement('a');
-            link.href = '#';
-            link.textContent = i;
-
-            if (i === 1) { // Activate the first page
-                link.classList.add('active');
+        function clearPaginationLinks() { // Added to avoid duplication
+            while (pagination.children.length > 2) {
+                pagination.removeChild(pagination.children[1]);
             }
-
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default link behavior
-                // Remove 'active' class from all links
-                document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
-                // Add 'active' class to the clicked link
-                link.classList.add('active');
-                showPage(i);
-            });
-
-            pagination.insertBefore(link, pagination.querySelector('.next')); // Insert before the "next" link
         }
+
+        function generatePaginationLinks() { // Added to be called on search and initial load
+             // Generate pagination links
+            for (let i = 1; i <= numPages; i++) {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.textContent = i;
+                link.dataset.page = i; // Store the page number
+
+                if (i === 1) { // Activate the first page
+                    link.classList.add('active');
+                }
+
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    const page = parseInt(e.target.dataset.page);
+                    currentPage = page; // Update the current page
+                    updatePagination();
+                    showPage(page);
+                });
+
+                pagination.insertBefore(link, pagination.querySelector('.next')); // Insert before the "next" link
+            }
+        }
+
 
         // Initial display - show the first page
         showPage(1);
+        generatePaginationLinks();
 
         // Previous/Next page functionality
         const prevButton = document.querySelector('.pagination .prev');
         const nextButton = document.querySelector('.pagination .next');
-        let currentPage = 1;
+
 
         prevButton.addEventListener('click', (e) => {
             e.preventDefault();
@@ -319,13 +325,13 @@
         });
 
         function updatePagination() {
-             // Remove 'active' class from all links
+            // Remove 'active' class from all links
             document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
 
             // Find the link for the current page and add 'active'
             const links = document.querySelectorAll('.pagination a');
             links.forEach(link => {
-                if (link.textContent == currentPage) {
+                if (parseInt(link.dataset.page) === currentPage) {
                     link.classList.add('active');
                 }
             });
